@@ -52,9 +52,12 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "!<rootDir>/src/app.js",
+      "!<rootDir>/src/App.js",
       "!<rootDir>/src/index.js",
       "!<rootDir>/src/seed.js",
+      "!<rootDir>/src/fixtures/*.js",
+      "!<rootDir>/src/hooks/*.js",
+      "!<rootDir>/src/helpers/*.js",
       "!<rootDir>/src/services/firebase.js"
     ],
     "coverageThreshold": {

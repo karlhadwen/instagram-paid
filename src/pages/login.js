@@ -41,7 +41,11 @@ export default function Login() {
             <img src="/images/logo.png" alt="Instagram" className="mt-2 mb-4" />
           </h1>
 
-          {error && <p className="mb-4 text-xs text-red-primary">{error}</p>}
+          {error && (
+            <p data-testid="error" className="mb-4 text-xs text-red-primary">
+              {error}
+            </p>
+          )}
 
           <form onSubmit={handleLogin} method="POST" data-testid="login">
             <input
@@ -66,7 +70,7 @@ export default function Login() {
               className={`bg-blue-medium text-white w-full rounded h-8 font-bold
             ${isInvalid && 'opacity-50'}`}
             >
-              Log In
+              Login
             </button>
           </form>
         </div>
