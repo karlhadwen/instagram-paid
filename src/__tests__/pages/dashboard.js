@@ -56,7 +56,8 @@ describe('<Dashboard />', () => {
                 }))
               },
               FieldValue: {
-                arrayUnion: jest.fn()
+                arrayUnion: jest.fn(),
+                arrayRemove: jest.fn()
               }
             }}
           >
@@ -88,8 +89,14 @@ describe('<Dashboard />', () => {
         expect(getAllByAltText('Instagram')).toBeTruthy(); // instagram logo
         expect(getByAltText('karl profile')).toBeTruthy();
         expect(getAllByText('Saint George and the Dragon')).toBeTruthy(); // caption for the img
+        expect(getByText('Suggestions for you')).toBeTruthy(); // suggestions exist
 
         fireEvent.click(getByText('Follow'));
+        fireEvent.click(getByTestId('like-photo-494LKmaF03bUcYZ4xhNu'));
+        fireEvent.keyDown(getByTestId('like-photo-494LKmaF03bUcYZ4xhNu'), {
+          key: 'Enter'
+        }); // toggle like
+        fireEvent.click(getByTestId('focus-input-494LKmaF03bUcYZ4xhNu'));
 
         // submit photo with valid string length
         fireEvent.change(getByTestId('add-comment-nJMT1l8msuNZ8tH3zvVI'), {
@@ -100,6 +107,11 @@ describe('<Dashboard />', () => {
         // submit photo with invalid string length
         fireEvent.change(getByTestId('add-comment-nJMT1l8msuNZ8tH3zvVI'), {
           target: { value: '' }
+        });
+
+        // toggle focus
+        fireEvent.keyDown(getByTestId('focus-input-494LKmaF03bUcYZ4xhNu'), {
+          key: 'Enter'
         });
         fireEvent.submit(getByTestId('add-comment-submit-nJMT1l8msuNZ8tH3zvVI'));
       });
@@ -148,6 +160,58 @@ describe('<Dashboard />', () => {
 
       expect(getByText('Login')).toBeTruthy();
       expect(getByText('Sign Up')).toBeTruthy();
+    });
+  });
+
+  it('renders the dashboard with a user profile and has no suggested profile', async () => {
+    await act(async () => {
+      getPhotos.mockImplementation(() => photosFixture);
+      getSuggestedProfiles.mockImplementation(() => []);
+      useUser.mockImplementation(() => ({ user: userFixture }));
+
+      const { queryByText } = render(
+        <Router>
+          <FirebaseContext.Provider
+            value={{
+              firebase: {
+                firestore: jest.fn(() => ({
+                  collection: jest.fn(() => ({
+                    doc: jest.fn(() => ({
+                      update: jest.fn(() => Promise.resolve('User added'))
+                    }))
+                  }))
+                }))
+              },
+              FieldValue: {
+                arrayUnion: jest.fn(),
+                arrayRemove: jest.fn()
+              }
+            }}
+          >
+            <UserContext.Provider
+              value={{
+                user: {
+                  uid: 'NvPY9M9MzFTARQ6M816YAzDJxZ72',
+                  displayName: 'karl'
+                }
+              }}
+            >
+              <LoggedInUserContext.Provider value={{ user: userFixture }}>
+                <Dashboard
+                  user={{
+                    uid: 'NvPY9M9MzFTARQ6M816YAzDJxZ72',
+                    displayName: 'karl'
+                  }}
+                />
+              </LoggedInUserContext.Provider>
+            </UserContext.Provider>
+          </FirebaseContext.Provider>
+        </Router>
+      );
+
+      await waitFor(() => {
+        expect(queryByText('Suggestions for you')).toBeFalsy();
+      });
     });
   });
 });
