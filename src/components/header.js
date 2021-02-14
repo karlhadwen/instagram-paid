@@ -44,6 +44,7 @@ export default function Header() {
 
                 <button
                   type="button"
+                  data-testid="sign-out"
                   title="Sign Out"
                   onClick={() => firebase.auth().signOut()}
                   onKeyDown={(event) => {
