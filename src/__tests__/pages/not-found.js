@@ -16,11 +16,26 @@ const firebase = {
 };
 
 describe('<NotFound />', () => {
-  it('renders the not found page', async () => {
+  it('renders the not found page with a logged in user', async () => {
     const { getByText } = render(
       <Router>
         <FirebaseContext.Provider value={{ firebase }}>
           <UserContext.Provider value={{ user: {} }}>
+            <NotFound />
+          </UserContext.Provider>
+        </FirebaseContext.Provider>
+      </Router>
+    );
+
+    expect(getByText('Not Found!')).toBeTruthy();
+    expect(document.title).toEqual('Not Found - Instagram');
+  });
+
+  it('renders the not found page with no active logged in user', async () => {
+    const { getByText } = render(
+      <Router>
+        <FirebaseContext.Provider value={{ firebase }}>
+          <UserContext.Provider value={{ user: null }}>
             <NotFound />
           </UserContext.Provider>
         </FirebaseContext.Provider>

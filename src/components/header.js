@@ -7,8 +7,8 @@ import * as ROUTES from '../constants/routes';
 import useUser from '../hooks/use-user';
 
 export default function Header() {
-  const { loggedInUser } = useContext(UserContext) || {};
-  const { user } = useUser(loggedInUser?.uid) || {};
+  const { user: loggedInUser } = useContext(UserContext);
+  const { user } = useUser(loggedInUser?.uid);
   const { firebase } = useContext(FirebaseContext);
 
   return (

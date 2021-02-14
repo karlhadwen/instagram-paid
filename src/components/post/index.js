@@ -1,6 +1,5 @@
 import { useRef } from 'react';
 import PropTypes from 'prop-types';
-import Skeleton from 'react-loading-skeleton';
 import Header from './header';
 import Image from './image';
 import Actions from './actions';
@@ -9,11 +8,11 @@ import Comments from './comments';
 
 export default function Post({ content }) {
   const commentInput = useRef(null);
-  const handleFocus = () => commentInput.current.focus();
+  const handleFocus = () => commentInput.current.focus(); // anon func so it doesn't get called right away
 
   // components
   // -> header, image, actions (like & comment icons), footer, comments
-  return content.imageSrc ? (
+  return (
     <div className="rounded col-span-4 border bg-white border-gray-primary mb-12">
       <Header username={content.username} />
       <Image src={content.imageSrc} caption={content.caption} />
@@ -31,8 +30,6 @@ export default function Post({ content }) {
         commentInput={commentInput}
       />
     </div>
-  ) : (
-    <Skeleton count={1} width={640} height={500} className="mb-5" />
   );
 }
 

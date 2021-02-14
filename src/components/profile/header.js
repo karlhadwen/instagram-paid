@@ -14,13 +14,13 @@ export default function Header({
     docId: profileDocId,
     userId: profileUserId,
     fullName,
-    followers = [],
-    following = [],
+    followers,
+    following,
     username: profileUsername
   }
 }) {
-  const { loggedInUser } = useContext(UserContext) || {};
-  const { user } = useUser(loggedInUser?.uid) || {};
+  const { loggedInUser } = useContext(UserContext);
+  const { user } = useUser(loggedInUser?.uid);
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
   const activeBtnFollow = user?.username && user?.username !== profileUsername;
 
@@ -79,7 +79,7 @@ export default function Header({
           )}
         </div>
         <div className="container flex mt-4 flex-col lg:flex-row">
-          {followers === undefined || following === undefined ? (
+          {!followers || !following ? (
             <Skeleton count={1} width={677} height={24} />
           ) : (
             <>
