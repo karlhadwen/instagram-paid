@@ -20,6 +20,7 @@
   "devDependencies": {
     "autoprefixer": "^10.2.4",
     "babel-eslint": "^10.1.0",
+    "cypress": "^6.4.0",
     "eslint": "^7.19.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^7.2.0",
@@ -42,6 +43,7 @@
     "start": "run-p watch:css react-scripts:start",
     "build": "run-s build:css react-scripts:dist",
     "test": "react-scripts test --coverage --watchAll",
+    "e2e": "cypress open",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
